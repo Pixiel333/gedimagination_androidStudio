@@ -31,6 +31,7 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnImporter = null;
+    private Button btnVoter = null;
     private PhotosDAO maBDD;
     private Photo P;
     private Boolean donneeImporte = false;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnImporter = (Button)findViewById(R.id.importer);
+        btnVoter = (Button)findViewById(R.id.voter);
+        btnVoter.setVisibility(View.INVISIBLE);
         btnImporter.setVisibility(View.INVISIBLE);
         importDates();
 
@@ -64,13 +67,14 @@ public class MainActivity extends AppCompatActivity {
                                 Photo P = new Photo(id, titre, description, date, cheminPhoto);
                                 maBDD.ajouterPhoto(P);
                                 donneeImporte = true;
+                                Toast.makeText(getApplicationContext(), "Les données ont bien été importées !", Toast.LENGTH_LONG).show();
                             }
                             catch (JSONException e){
                                 e.printStackTrace();
                             }
                         }
                         maBDD.close();
-                        Toast.makeText(getApplicationContext(), "Les données ont bien été importées !", Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override
@@ -81,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnVoter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public Boolean importDates(){
