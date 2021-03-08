@@ -32,19 +32,31 @@
         android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="163dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="7dp"
         android:text="Bonjour!"
         android:textSize="24sp"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="66dp" />
+        app:layout_constraintBottom_toTopOf="@+id/text2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="191dp"
         android:text="Bienvenue sur ce jeux concour"
         android:textSize="24sp"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="105dp" />
+        app:layout_constraintBottom_toTopOf="@+id/importer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
