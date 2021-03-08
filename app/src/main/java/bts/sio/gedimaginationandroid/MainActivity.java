@@ -2,6 +2,7 @@ package bts.sio.gedimaginationandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -88,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
         btnVoter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent identification = new Intent(MainActivity.this, Identification.class);
+                startActivity(identification);
             }
         });
     }
@@ -163,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
             if (dateNow.after(dateFin) && dateNow.before(dateDebut))
             {
                 dateValide = true;
+            }
+            else if (dateNow.after(dateDebut))
+            {
+                btnVoter.setVisibility(View.VISIBLE);
             }
         } catch (ParseException e) {
             e.printStackTrace();
