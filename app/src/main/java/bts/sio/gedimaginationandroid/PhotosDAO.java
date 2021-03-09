@@ -59,4 +59,15 @@ public class PhotosDAO {
         return curseurContact;
     }
 
+    public Boolean idTicketExistant(String unId)
+    {
+        Boolean existe = false;
+        Cursor curseurTicket = maBase.rawQuery("SELECT idTicket FROM ACHAT WHERE idTIcket=?",new String[] {unId});
+        if (curseurTicket.getCount() != 0)
+        {
+            existe = true;
+        }
+        return existe;
+    }
+
 }

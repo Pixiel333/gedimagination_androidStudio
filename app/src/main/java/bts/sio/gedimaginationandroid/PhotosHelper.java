@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PhotosHelper extends SQLiteOpenHelper {
     public PhotosHelper(Context context)
     {
-        super(context, "basePhotosWS.db", null, 1);
+        super(context, "basePhotosWS.db", null, 2);
     }
 
     @Override
@@ -26,12 +26,29 @@ public class PhotosHelper extends SQLiteOpenHelper {
                 + "dateFinInsc TEXT,"
                 + "dateDebutVote TEXT,"
                 + "dateFinVote TEXT);");
+
+        db.execSQL("CREATE TABLE ACHAT ("
+                + "idTicket TEXT PRIMARY KEY,"
+                + "nom TEXT,"
+                + "prenom TEXT,"
+                + "email TEXT);");
+
+        db.execSQL("CREATE TABLE VOTE ("
+                + "idTicket TEXT,"
+                + "idPhoto INTEGER,"
+                + "nom TEXT,"
+                + "email TEXT,"
+                + "PRIMARY KEY (idTicket,idPhoto),"
+                + "FOREIGN KEY (idTicket) REFERENCES ACHAT (idTicket),"
+                + "FOREIGN KEY (idPhoto) REFERENCES PHOTO (id));");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS PHOTO;");
         db.execSQL("DROP TABLE IF EXISTS DATES;");
+        db.execSQL("DROP TABLE IF EXISTS ACHAT;");
+        db.execSQL("DROP TABLE IF EXISTS VOTE;");
         onCreate(db);
     }
 }
