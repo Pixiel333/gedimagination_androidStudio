@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CDCDCD"
+    android:contextClickable="false"
+    android:defaultFocusHighlightEnabled="false"
     tools:context=".Identification">
 
     <TextView
@@ -115,15 +118,17 @@
 
     <Button
         android:id="@+id/valider"
+        style="@android:style/Widget.Button"
         android:layout_width="300dp"
-        android:layout_height="75dp"
+        android:layout_height="65dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/bouton"
         android:text="Valider"
+        android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailText" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
