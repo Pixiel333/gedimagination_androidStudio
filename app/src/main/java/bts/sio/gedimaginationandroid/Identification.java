@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 public class Identification extends AppCompatActivity {
 
+    private PhotosDAO maBDD;
     private EditText id;
     private EditText nom;
     private EditText prenom;
@@ -35,7 +36,15 @@ public class Identification extends AppCompatActivity {
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                maBDD = new PhotosDAO(Identification.this);
+                if (maBDD.idTicketExistant(id.getText().toString()))
+                {
+
+                }
+                else
+                {
+
+                }
             }
         });
     }
