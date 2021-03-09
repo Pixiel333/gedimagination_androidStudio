@@ -39,10 +39,18 @@ public class Identification extends AppCompatActivity {
                 maBDD = new PhotosDAO(Identification.this);
                 if (maBDD.idTicketExistant(id.getText().toString()))
                 {
-
+                    Intent remerciement = new Intent(Identification.this, remerciement.class);
+                    remerciement.putExtra("dejaVoter", true);
+                    startActivity(remerciement);
                 }
                 else
                 {
+                    String textId = id.getText().toString();
+                    String textPrenom = prenom.getText().toString();
+                    String textNom = nom.getText().toString();
+                    String textEmail = email.getText().toString();
+
+                    maBDD.ajouterAchat(textId, textPrenom, textNom, textEmail);
 
                 }
             }

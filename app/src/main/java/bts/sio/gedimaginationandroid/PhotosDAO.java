@@ -47,6 +47,19 @@ public class PhotosDAO {
         maBase.insert("DATES", null, v);
     }
 
+    public void ajouterAchat(String id, String prenom, String nom, String email)
+    {
+        //création d'un ContentValues
+        ContentValues v = new ContentValues();
+        // ajout des propriétés au ContentValues
+        v.put("idTicket", id);
+        v.put("prenom", prenom);
+        v.put("nom", nom);
+        v.put("email", email);
+        // ajout des dates du concours dans la table dates
+        maBase.insert("ACHAT", null, v);
+    }
+
     public void supprimerTous()
     {
         maBase.execSQL("DELETE FROM PHOTO;");
