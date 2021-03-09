@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".remerciement"></activity>
+        <activity android:name=".ListePhotos"></activity>
+        <activity android:name=".remerciement" />
         <activity android:name=".Identification" />
         <activity android:name=".MainActivity">
             <intent-filter>
