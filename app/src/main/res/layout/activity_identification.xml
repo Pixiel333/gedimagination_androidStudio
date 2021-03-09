@@ -114,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text5" />
 
     <Button
-        android:id="@+id/importer"
+        android:id="@+id/valider"
         android:layout_width="300dp"
         android:layout_height="75dp"
         android:layout_marginStart="40dp"
