@@ -17,10 +17,10 @@
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text1" />
+        app:layout_constraintTop_toBottomOf="@+id/textRemerciement" />
 
     <TextView
-        android:id="@+id/text1"
+        android:id="@+id/textRemerciement"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:layout_marginStart="55dp"
