@@ -83,4 +83,16 @@ public class PhotosDAO {
         return existe;
     }
 
+    public Boolean donneesImportees()
+    {
+        Boolean existe = false;
+        Cursor curseurDates = maBase.rawQuery("SELECT * FROM DATES",new String[] {});
+        Cursor curseurPhotos = maBase.rawQuery("SELECT id FROM PHOTO",new String[] {});
+        if (curseurDates.getCount() != 0 && curseurPhotos.getCount() != 0)
+        {
+            existe = true;
+        }
+        return existe;
+    }
+
 }

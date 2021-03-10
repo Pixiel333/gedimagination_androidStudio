@@ -46,7 +46,15 @@ public class MainActivity extends AppCompatActivity {
         btnVoter = (Button)findViewById(R.id.voter);
         btnVoter.setVisibility(View.INVISIBLE);
         btnImporter.setVisibility(View.INVISIBLE);
-        importDates();
+        maBDD = new PhotosDAO(MainActivity.this);
+        if (maBDD.donneesImportees())
+        {
+            btnVoter.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            importDates();
+        }
 
         btnImporter.setOnClickListener(new View.OnClickListener() {
             @Override

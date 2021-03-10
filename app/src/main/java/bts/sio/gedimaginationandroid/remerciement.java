@@ -18,5 +18,15 @@ public class remerciement extends AppCompatActivity {
 
         Intent i = getIntent();
         dejaVoter = i.getBooleanExtra("dejaVoter",false);
+
+        message = (TextView)findViewById(R.id.textRemerciement);
+        if (dejaVoter)
+        {
+            message.setText("Vous avez déjà voté !\n Pour revoter vous pouvez faire un nouvel achat !");
+        }
+        else
+        {
+            message.setText("Merci d'avoir voté !\n Pour revoter vous pouvez faire un nouvel achat !");
+        }
     }
 }
