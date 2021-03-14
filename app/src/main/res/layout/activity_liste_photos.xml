@@ -8,6 +8,6 @@
     <ListView
         android:id="@+id/LW_photos"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="600dp"
         android:background="#FFFFFF"></ListView>
 </LinearLayout>
