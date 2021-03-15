@@ -5,9 +5,30 @@
     android:layout_height="match_parent"
     tools:context=".ListePhotos">
 
-    <ListView
-        android:id="@+id/LW_photos"
+
+
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="600dp"
-        android:background="#FFFFFF"></ListView>
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:id="@+id/LV_photos"
+            android:layout_width="wrap_content"
+            android:layout_height="640dp"
+            android:background="#FFFFFF"></ListView>
+
+        <Button
+            android:id="@+id/voter"
+            android:layout_width="350dp"
+            android:layout_height="75dp"
+            android:background="@drawable/bouton"
+            android:text="Valider"
+            android:textSize="24sp"
+            android:layout_below="@id/LV_photos"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"/>
+
+    </RelativeLayout>
+
 </LinearLayout>
