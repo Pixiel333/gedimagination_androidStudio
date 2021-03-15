@@ -13,7 +13,7 @@
         <ListView
             android:id="@+id/LV_photos"
             android:layout_width="wrap_content"
-            android:layout_height="640dp"
+            android:layout_height="560dp"
             android:background="#FFFFFF"
             android:divider="@null"
             android:deviderHeight="0dp"/>
