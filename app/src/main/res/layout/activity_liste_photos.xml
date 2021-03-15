@@ -3,10 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     tools:context=".ListePhotos">
-
-
-
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -16,7 +14,9 @@
             android:id="@+id/LV_photos"
             android:layout_width="wrap_content"
             android:layout_height="640dp"
-            android:background="#FFFFFF"></ListView>
+            android:background="#FFFFFF"
+            android:divider="@null"
+            android:deviderHeight="0dp"/>
 
         <Button
             android:id="@+id/voter"
