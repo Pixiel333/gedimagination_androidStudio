@@ -57,6 +57,10 @@ public class Identification extends AppCompatActivity {
                         String textEmail = email.getText().toString();
 
                         maBDD.ajouterAchat(textId, textPrenom, textNom, textEmail);
+
+                        // start de la liste des photos
+                        Intent activity_photos = new Intent(Identification.this, ListePhotos.class);
+                        startActivity(activity_photos);
                     }
                 }
             }
