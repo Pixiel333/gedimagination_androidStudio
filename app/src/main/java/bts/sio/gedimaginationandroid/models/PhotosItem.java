@@ -1,6 +1,10 @@
 package bts.sio.gedimaginationandroid.models;
 
-public class PhotosItem {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class PhotosItem implements Serializable {
 
     private int numero;
     private  String titre;

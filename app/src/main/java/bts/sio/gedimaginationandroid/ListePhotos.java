@@ -3,15 +3,26 @@ package bts.sio.gedimaginationandroid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import bts.sio.gedimaginationandroid.adapters.PhotosAdapter;
@@ -19,36 +30,75 @@ import bts.sio.gedimaginationandroid.models.PhotosItem;
 
 public class ListePhotos extends AppCompatActivity {
     private String[] lesCouleurs = {"Blanc","Bleu","Jaune","Noir","Rouge","Vert"} ;
+    private ArrayList<String> lesPhotosListe = null;
     private Boolean estClique = false;
+    private ArrayList<HashMap<String,String>> lesPhotos;
+    private ListView photosLV = null;
+    private Button btnValider = null;
+    private  List<PhotosItem> photosItemList = new ArrayList<PhotosItem>();
+    private List<PhotosItem> photosChecked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_photos);
 
+        //get list view
+        photosLV = findViewById(R.id.LV_photos);
+
+        btnValider = (Button) findViewById(R.id.voter);
+        btnValider.setEnabled(false);
         //listes des photos
-        List<PhotosItem> photosItemList = new ArrayList<>();
         photosItemList.add(new PhotosItem(1,"un perry"));
         photosItemList.add(new PhotosItem(2,"une table carré"));
         photosItemList.add(new PhotosItem(3,"du carrelage"));
         photosItemList.add(new PhotosItem(4,"mon salon tout neuf"));
-        lesLivres = new
+        lesPhotosListe = new ArrayList<String>();
+        for (PhotosItem photoItm: photosItemList) {
+            lesPhotosListe.add(String.valueOf(photoItm.getNumero()) + " | " + photoItm.getTitre());
+        }
 
-
-        //get list view
-        final ListView photosLV = findViewById(R.id.LV_photos);
-
-        photosLV.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice,lesCouleurs));
-        //photosLV.setAdapter(new PhotosAdapter(this, photosItemList));
-
-        /*photosLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        photosLV.setAdapter(new ArrayAdapter<String>(this, R.layout.adapter_lv_photos, lesPhotosListe ));
+        photosLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LinearLayout lnl = (LinearLayout) photosLV.getChildAt(position);
-                CardView cv = (CardView) lnl.findViewById(R.id.card_view);
-                cv.setSelected(true);
-                cv.setPressed(true);
-                cv.setBackground(Drawable.createFromPath("/drawable/txt_view_bg.xml"));
+                SparseBooleanArray click = null;
+                int cpt = 0;
+                click = photosLV.getCheckedItemPositions();
+                for (int i=0; i<click.size();i++) {
+                    if (click.valueAt(i)) {
+                        cpt++;
+                    }
+                    Log.i("test_valueAt", click.keyAt(i) + String.valueOf(click.valueAt(i)) + photosItemList.get(click.keyAt(i)).getTitre());
+                }
 
+                if (cpt > 3 || cpt == 0) {
+                    btnValider.setEnabled(false);
+                }
+                else
+                {
+                    btnValider.setEnabled(true);
+                }
             }
-        });*/
+        });
+
+        btnValider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                photosChecked = new ArrayList<PhotosItem>();
+                SparseBooleanArray lesChoix = photosLV.getCheckedItemPositions();
+                for (int i=0; i<lesChoix.size();i++) {
+                    if (lesChoix.valueAt(i)) {
+                        photosChecked.add(photosItemList.get(lesChoix.keyAt(i)));
+                    }
+                }
+                Log.i("tester", String.valueOf(photosChecked.size()));
+                Intent notation = new Intent(ListePhotos.this, Notation.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ARRAYLIST",(Serializable)photosChecked);
+                notation.putExtra("bundle", bundle);
+                startActivity(notation);
+            }
+        });
+
     }
 }

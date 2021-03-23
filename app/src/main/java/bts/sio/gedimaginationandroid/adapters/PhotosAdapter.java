@@ -52,12 +52,12 @@ public class PhotosAdapter extends BaseAdapter {
         int itemId = currentItem.getNumero();
 
         //get item titre view
-        TextView itemTitreView = convertView.findViewById(R.id.nom_image_txt);
+        TextView itemTitreView = convertView.findViewById(R.id.titre_photo_txt);
         itemTitreView.setText(itemTitre);
 
         //get item id view
-        TextView itemIdView = convertView.findViewById(R.id.id_photo_txt);
-        itemIdView.setText(String.valueOf(itemId));
+        //TextView itemIdView = convertView.findViewById(R.id.id_photo_txt);
+        //itemIdView.setText(String.valueOf(itemId));
         return convertView;
     }
 }
