@@ -11,8 +11,8 @@
         android:id="@+id/retour"
         android:layout_width="300dp"
         android:layout_height="65dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/bouton"
         android:text="Acceuil"
         android:textAlignment="center"
@@ -24,12 +24,19 @@
         android:id="@+id/textRemerciement"
         android:layout_width="300dp"
         android:layout_height="400dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="156dp"
         android:text="[Bonjour de la part de Allan et Matisse]"
         android:textAlignment="center"
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/gedimatlogo"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-172dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
