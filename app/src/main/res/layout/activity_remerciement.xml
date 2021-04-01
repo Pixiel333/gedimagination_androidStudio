@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/textRemerciement"
         android:layout_width="300dp"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="72dp"
         android:text="[Bonjour de la part de Allan et Matisse]"
@@ -35,7 +35,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="284dp"
         android:src="@drawable/gedimat"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
