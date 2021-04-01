@@ -60,10 +60,25 @@ public class PhotosDAO {
         maBase.insert("ACHAT", null, v);
     }
 
+    public void ajouterVote(String idTicket,Integer idPhoto, Integer rating, String dateVote)
+    {
+        //création d'un ContentValues
+        ContentValues v = new ContentValues();
+        // ajout des propriétés au ContentValues
+        v.put("idTicket", idTicket);
+        v.put("idPhoto", idPhoto);
+        v.put("rating", rating);
+        v.put("dateVote", dateVote);
+        // ajout des dates du concours dans la table dates
+        maBase.insert("VOTE", null, v);
+    }
+
     public void supprimerTous()
     {
         maBase.execSQL("DELETE FROM PHOTO;");
-        maBase.execSQL("DELETE FROM DATES");
+        maBase.execSQL("DELETE FROM DATES;");
+        maBase.execSQL("DELETE FROM ACHAT;");
+        maBase.execSQL("DELETE FROM VOTE;");
     }
 
     public Cursor selectionnerLesDates()

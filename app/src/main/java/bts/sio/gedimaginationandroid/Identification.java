@@ -60,6 +60,7 @@ public class Identification extends AppCompatActivity {
 
                         // start de la liste des photos
                         Intent activity_photos = new Intent(Identification.this, ListePhotos.class);
+                        activity_photos.putExtra("idTicket", textId);
                         startActivity(activity_photos);
                     }
                 }

@@ -14,7 +14,7 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/bouton"
-        android:text="Acceuil"
+        android:text="Accueil"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"

@@ -37,11 +37,13 @@ public class ListePhotos extends AppCompatActivity {
     private Button btnValider = null;
     private  List<PhotosItem> photosItemList = new ArrayList<PhotosItem>();
     private List<PhotosItem> photosChecked;
+    private String idTicket;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_photos);
-
+        Intent intent = getIntent();
+        idTicket = intent.getStringExtra("idTicket");
         //get list view
         photosLV = findViewById(R.id.LV_photos);
 
@@ -96,6 +98,7 @@ public class ListePhotos extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ARRAYLIST",(Serializable)photosChecked);
                 notation.putExtra("bundle", bundle);
+                notation.putExtra("idTicket", idTicket);
                 startActivity(notation);
             }
         });

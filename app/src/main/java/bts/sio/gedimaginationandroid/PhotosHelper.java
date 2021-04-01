@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PhotosHelper extends SQLiteOpenHelper {
     public PhotosHelper(Context context)
     {
-        super(context, "basePhotosWS.db", null, 2);
+        super(context, "basePhotosWS.db", null, 3);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class PhotosHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE VOTE ("
                 + "idTicket TEXT,"
                 + "idPhoto INTEGER,"
-                + "nom TEXT,"
-                + "email TEXT,"
+                + "rating INTEGER,"
+                + "dateVote TEXT,"
                 + "PRIMARY KEY (idTicket,idPhoto),"
                 + "FOREIGN KEY (idTicket) REFERENCES ACHAT (idTicket),"
                 + "FOREIGN KEY (idPhoto) REFERENCES PHOTO (id));");
