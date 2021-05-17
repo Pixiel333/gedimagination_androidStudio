@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnImporter = null;
     private Button btnVoter = null;
+    private Button btnExporter = null;
     private PhotosDAO maBDD;
     private Photo P;
     private Boolean donneeImporte = false;
@@ -44,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnImporter = (Button)findViewById(R.id.importer);
         btnVoter = (Button)findViewById(R.id.voter);
+        btnExporter = (Button)findViewById(R.id.exporter);
         btnVoter.setVisibility(View.INVISIBLE);
         btnImporter.setVisibility(View.INVISIBLE);
+        btnExporter.setVisibility(View.INVISIBLE);
         maBDD = new PhotosDAO(MainActivity.this);
         if (maBDD.donneesImportees())
         {
