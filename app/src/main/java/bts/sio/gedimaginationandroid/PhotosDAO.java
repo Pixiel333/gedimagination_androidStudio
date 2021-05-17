@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import bts.sio.gedimaginationandroid.models.Dates;
+import bts.sio.gedimaginationandroid.models.Photo;
+import bts.sio.gedimaginationandroid.models.Vote;
 
 public class PhotosDAO {
 
@@ -85,7 +90,7 @@ public class PhotosDAO {
 
     public Cursor selectionnerLesDates()
     {
-        Cursor curseurContact = maBase.rawQuery("SELECT dateFinInsc, dateDebutVote FROM DATES;" , new String[] {});
+        Cursor curseurContact = maBase.rawQuery("SELECT dateFinInsc, dateDebutVote, dateFinVote FROM DATES;" , new String[] {});
         return curseurContact;
     }
 
@@ -130,4 +135,20 @@ public class PhotosDAO {
         return listPhotos;
     }
 
+    public ArrayList<Vote> getDataVote()
+    {
+        ArrayList<Vote> lesVotes = new ArrayList<>();
+        Cursor curseurContact = maBase.rawQuery("SELECT * FROM VOTE;" , new String[] {});
+        for(curseurContact.moveToFirst(); !curseurContact.isAfterLast(); curseurContact.moveToNext()) {
+            lesVotes.add(
+                    new Vote(
+                            curseurContact.getString(curseurContact.getColumnIndex("idTicket")),
+                            curseurContact.getInt(curseurContact.getColumnIndex("idPhoto")),
+                            curseurContact.getInt(curseurContact.getColumnIndex("rating")),
+                            curseurContact.getString(curseurContact.getColumnIndex("dateVote"))
+                    )
+            );
+        }
+        return lesVotes;
+    }
 }

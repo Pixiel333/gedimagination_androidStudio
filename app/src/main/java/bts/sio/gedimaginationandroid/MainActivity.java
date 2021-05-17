@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,16 +17,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import bts.sio.gedimaginationandroid.models.Dates;
+import bts.sio.gedimaginationandroid.models.Photo;
+import bts.sio.gedimaginationandroid.models.Vote;
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,6 +97,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnExporter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    JSONArray data = new JSONArray();
+                    ArrayList<Vote> lesVotes = new ArrayList<Vote>();
+                    lesVotes = maBDD.getDataVote();
+                    if (!lesVotes.isEmpty())
+                    {
+                        for (Vote vote : lesVotes) {
+                            JSONObject jsonParams = new JSONObject();
+                            jsonParams.put("idTicket", vote.getIdTicket());
+                            jsonParams.put("idPhoto", vote.getIdPhoto());
+                            jsonParams.put("rating", vote.getRating());
+                            jsonParams.put("dateVote", vote.getDateVote());
+                            data.put(jsonParams);
+                        }
+
+                        String url2 = "http://10.0.2.2:8080/gedimagination/WebService/concours/photos";
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        StringEntity entity = new StringEntity(data.toString());
+                        client.post(MainActivity.this, url2, entity, "application/json", new JsonHttpResponseHandler() {
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                super.onSuccess(statusCode, headers, response);
+                                Toast.makeText(getApplicationContext(), "Données envoyées, Status code = " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                super.onFailure(statusCode, headers, responseString, throwable);
+                                if (statusCode == 401) {
+                                    Toast.makeText(getApplicationContext(), "Erreur d'authentification, Status code = " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Erreur impossible d'envoyer les données, Status code = " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        });
+                    }
+                } catch (JSONException | UnsupportedEncodingException e) {
+                }
+
+            }
+        });
+
         btnVoter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,10 +202,12 @@ public class MainActivity extends AppCompatActivity {
         Log.i("verif date", String.valueOf(curseurTous.getCount()));
         String dateFinInsc = "";
         String dateDebutVote = "";
+        String dateFinVote = "";
         for(curseurTous.moveToFirst(); !curseurTous.isAfterLast(); curseurTous.moveToNext()) {
             Log.i("Passage for", "okay");
             dateFinInsc= curseurTous.getString(curseurTous.getColumnIndex("dateFinInsc"));
             dateDebutVote = curseurTous.getString(curseurTous.getColumnIndex("dateDebutVote"));
+            dateFinVote = curseurTous.getString(curseurTous.getColumnIndex("dateFinVote"));
         }
         curseurTous.close();
         maBDD.close();
@@ -167,19 +216,21 @@ public class MainActivity extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date dateNow = new Date();
             String date = dateFormat.format(dateNow);
-            Date dateFin = dateFormat.parse(dateFinInsc);
+            Date dateFinIns = dateFormat.parse(dateFinInsc);
             Date dateDebut = dateFormat.parse(dateDebutVote);
-            Toast.makeText(getApplicationContext(), "ajd :" + date +"\n dateFIn : " + dateFinInsc +"\n dateDebut : " + dateDebutVote, Toast.LENGTH_LONG).show();
-            Log.i("test_dates","ajd :" + dateNow +"\n dateFIn : " + dateFin +"\n dateDebut : " + dateDebut);
-            Log.i("test_dateafter", String.valueOf(dateNow.after(dateFin)));
-            Log.i("test_dateBefor", String.valueOf(dateNow.before(dateDebut)));
-            if (dateNow.after(dateFin) && dateNow.before(dateDebut))
+            Date dateFinV = dateFormat.parse(dateFinVote);
+            if (dateNow.after(dateFinIns) && dateNow.before(dateDebut))
             {
                 dateValide = true;
             }
             else if (dateNow.after(dateDebut))
             {
                 btnVoter.setVisibility(View.VISIBLE);
+            }
+            else if (dateNow.after(dateFinV))
+            {
+                btnExporter.setVisibility(View.VISIBLE);
+                btnVoter.setVisibility(View.INVISIBLE);
             }
         } catch (ParseException e) {
             e.printStackTrace();

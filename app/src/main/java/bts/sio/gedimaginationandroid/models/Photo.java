@@ -1,4 +1,4 @@
-package bts.sio.gedimaginationandroid;
+package bts.sio.gedimaginationandroid.models;
 
 
 public class Photo {
