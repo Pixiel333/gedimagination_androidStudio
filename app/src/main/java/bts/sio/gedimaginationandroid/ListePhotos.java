@@ -25,11 +25,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import bts.sio.gedimaginationandroid.adapters.PhotosAdapter;
 import bts.sio.gedimaginationandroid.models.PhotosItem;
 
 public class ListePhotos extends AppCompatActivity {
-    private String[] lesCouleurs = {"Blanc","Bleu","Jaune","Noir","Rouge","Vert"} ;
+    private PhotosDAO maBDD;
     private ArrayList<String> lesPhotosListe = null;
     private Boolean estClique = false;
     private ArrayList<HashMap<String,String>> lesPhotos;
@@ -46,14 +45,15 @@ public class ListePhotos extends AppCompatActivity {
         idTicket = intent.getStringExtra("idTicket");
         //get list view
         photosLV = findViewById(R.id.LV_photos);
-
+        maBDD = new PhotosDAO(ListePhotos.this);
+        ArrayList<Photo> listPhotos = maBDD.selectionnerLesPhotos();
         btnValider = (Button) findViewById(R.id.voter);
         btnValider.setEnabled(false);
         //listes des photos
-        photosItemList.add(new PhotosItem(1,"un perry"));
-        photosItemList.add(new PhotosItem(2,"une table carré"));
-        photosItemList.add(new PhotosItem(3,"du carrelage"));
-        photosItemList.add(new PhotosItem(4,"mon salon tout neuf"));
+        for (Photo laPhoto : listPhotos)
+        {
+            photosItemList.add(new PhotosItem(laPhoto.getId(),laPhoto.getTitre()));
+        }
         lesPhotosListe = new ArrayList<String>();
         for (PhotosItem photoItm: photosItemList) {
             lesPhotosListe.add(String.valueOf(photoItm.getNumero()) + " | " + photoItm.getTitre());

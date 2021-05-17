@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 public class PhotosDAO {
 
     private SQLiteDatabase maBase;
@@ -108,6 +110,24 @@ public class PhotosDAO {
             existe = true;
         }
         return existe;
+    }
+
+    public ArrayList<Photo> selectionnerLesPhotos()
+    {
+        ArrayList<Photo> listPhotos = new ArrayList<>();
+        Cursor curseurContact = maBase.rawQuery("SELECT * FROM PHOTO;" , new String[] {});
+        for(curseurContact.moveToFirst(); !curseurContact.isAfterLast(); curseurContact.moveToNext()) {
+            listPhotos.add(
+                    new Photo(
+                            curseurContact.getInt(curseurContact.getColumnIndex("id")),
+                            curseurContact.getString(curseurContact.getColumnIndex("titre")),
+                            curseurContact.getString(curseurContact.getColumnIndex("description")),
+                            curseurContact.getString(curseurContact.getColumnIndex("date")),
+                            curseurContact.getString(curseurContact.getColumnIndex("chemin_photo"))
+                    )
+            );
+        }
+        return listPhotos;
     }
 
 }
