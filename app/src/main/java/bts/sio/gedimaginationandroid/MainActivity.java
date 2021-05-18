@@ -49,51 +49,52 @@ public class MainActivity extends AppCompatActivity {
         btnVoter.setVisibility(View.INVISIBLE);
         btnImporter.setVisibility(View.INVISIBLE);
         btnExporter.setVisibility(View.INVISIBLE);
-        maBDD = new PhotosDAO(MainActivity.this);
-        if (maBDD.donneesImportees())
-        {
-            btnVoter.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            importDates();
-        }
+        importDates();
 
         btnImporter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url1 = "http://10.0.2.2:8080/gedimagination/WebService/concours/photos";
-                AsyncHttpClient request = new AsyncHttpClient();
-                request.get(url1, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        maBDD = new PhotosDAO(MainActivity.this);
-                        maBDD.supprimerTous();
-                        for(int i = 0 ; i < response.length() ; i++) {
-                            try {
-                                int id = response.getJSONObject(i).getInt("id");
-                                String titre = response.getJSONObject(i).getString("titre");
-                                String description = response.getJSONObject(i).getString("description");
-                                String date = response.getJSONObject(i).getString("date");
-                                String cheminPhoto = response.getJSONObject(i).getString("chemin_photo");
-                                Photo P = new Photo(id, titre, description, date, cheminPhoto);
-                                maBDD.ajouterPhoto(P);
-                                donneeImporte = true;
-                                Toast.makeText(getApplicationContext(), "Les données ont bien été importées !", Toast.LENGTH_LONG).show();
+                maBDD = new PhotosDAO(MainActivity.this);
+                if (!maBDD.donneesImportees())
+                {
+                    String url1 = "http://10.0.2.2:8080/gedimagination/WebService/concours/photos";
+                    AsyncHttpClient request = new AsyncHttpClient();
+                    request.get(url1, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                            maBDD = new PhotosDAO(MainActivity.this);
+                            maBDD.supprimerTous();
+                            for(int i = 0 ; i < response.length() ; i++) {
+                                try {
+                                    int id = response.getJSONObject(i).getInt("id");
+                                    String titre = response.getJSONObject(i).getString("titre");
+                                    String description = response.getJSONObject(i).getString("description");
+                                    String date = response.getJSONObject(i).getString("date");
+                                    String cheminPhoto = response.getJSONObject(i).getString("chemin_photo");
+                                    Photo P = new Photo(id, titre, description, date, cheminPhoto);
+                                    maBDD.ajouterPhoto(P);
+                                    donneeImporte = true;
+                                    Toast.makeText(getApplicationContext(), "Les données ont bien été importées !", Toast.LENGTH_LONG).show();
+                                }
+                                catch (JSONException e){
+                                    e.printStackTrace();
+                                }
                             }
-                            catch (JSONException e){
-                                e.printStackTrace();
-                            }
+                            maBDD.close();
+
                         }
-                        maBDD.close();
 
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String response, Throwable err) {
-                        Toast.makeText(getApplicationContext(), "StatusCode = " + Integer.toString(statusCode) + "\n Erreur = " + err.toString() , Toast.LENGTH_LONG).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String response, Throwable err) {
+                            Toast.makeText(getApplicationContext(), "StatusCode = " + Integer.toString(statusCode) + "\n Erreur = " + err.toString() , Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Les données ont déjà été importées !", Toast.LENGTH_LONG).show();
+                }
+                maBDD.close();
             }
         });
 
@@ -103,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONArray data = new JSONArray();
                     ArrayList<Vote> lesVotes = new ArrayList<Vote>();
+                    maBDD = new PhotosDAO(MainActivity.this);
                     lesVotes = maBDD.getDataVote();
+                    maBDD.close();
                     if (!lesVotes.isEmpty())
                     {
                         for (Vote vote : lesVotes) {
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                         String url2 = "http://10.0.2.2:8080/gedimagination/WebService/concours/photos";
                         AsyncHttpClient client = new AsyncHttpClient();
                         StringEntity entity = new StringEntity(data.toString());
+                        Log.i("testExport", data.toString());
                         client.post(MainActivity.this, url2, entity, "application/json", new JsonHttpResponseHandler() {
 
                             @Override
@@ -167,16 +171,11 @@ public class MainActivity extends AppCompatActivity {
                     String dateFinVote = response.getString("date_fin_vote");
                     Dates D = new Dates(dateDebutInsc, dateFinInsc, dateDebutVote, dateFinVote);
                     maBDD.ajouterDates(D);
-                    Log.i("test", String.valueOf(response));
-                    Log.i("test1", response.getString("date_fin_vote"));
-                    Log.i("test_verif", verifDate().toString());
-                    if (verifDate() == true) {
-                        btnImporter.setVisibility(View.VISIBLE);
-                    }
-                    else{
-                        btnImporter.setVisibility(View.INVISIBLE);
-                    }
-
+                    //Log.i("test", String.valueOf(response));
+                    //Log.i("test1", response.getString("date_fin_vote"));
+                    //Log.i("test_verif", verifDate().toString());
+                    finiImportDates = true;
+                    verifDate();
                 }
                 catch (JSONException e){
                     e.printStackTrace();
@@ -188,6 +187,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String response, Throwable err) {
                 Toast.makeText(getApplicationContext(), "StatusCode = " + Integer.toString(statusCode) + "\n Erreur = " + err.toString() , Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFinish() {
+                Log.i("testOnFinish", String.valueOf(finiImportDates));
+                maBDD = new PhotosDAO(MainActivity.this);
+                if (!maBDD.datesImportees() && !maBDD.donneesImportees())
+                {
+                    Toast.makeText(getApplicationContext(), "ERREUR : Vous n'êtes pas connecté !", Toast.LENGTH_LONG).show();
+                }
+                maBDD.close();
+                verifDate();
             }
         });
         Log.i("test_finish", String.valueOf(finiImportDates));
@@ -219,12 +230,15 @@ public class MainActivity extends AppCompatActivity {
             Date dateFinIns = dateFormat.parse(dateFinInsc);
             Date dateDebut = dateFormat.parse(dateDebutVote);
             Date dateFinV = dateFormat.parse(dateFinVote);
+            Log.i("test", String.valueOf(dateFinV));
             if (dateNow.after(dateFinIns) && dateNow.before(dateDebut))
             {
+                btnImporter.setVisibility(View.VISIBLE);
                 dateValide = true;
             }
-            else if (dateNow.after(dateDebut))
+            else if (dateNow.after(dateDebut) && dateNow.before(dateFinV))
             {
+                btnImporter.setVisibility(View.INVISIBLE);
                 btnVoter.setVisibility(View.VISIBLE);
             }
             else if (dateNow.after(dateFinV))

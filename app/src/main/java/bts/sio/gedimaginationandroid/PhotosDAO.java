@@ -43,6 +43,7 @@ public class PhotosDAO {
 
     public void ajouterDates(Dates lesDates)
     {
+        maBase.execSQL("DELETE FROM DATES;");
         //création d'un ContentValues
         ContentValues v = new ContentValues();
         // ajout des propriétés au ContentValues
@@ -108,9 +109,19 @@ public class PhotosDAO {
     public Boolean donneesImportees()
     {
         Boolean existe = false;
-        Cursor curseurDates = maBase.rawQuery("SELECT * FROM DATES",new String[] {});
         Cursor curseurPhotos = maBase.rawQuery("SELECT id FROM PHOTO",new String[] {});
-        if (curseurDates.getCount() != 0 && curseurPhotos.getCount() != 0)
+        if (curseurPhotos.getCount() != 0)
+        {
+            existe = true;
+        }
+        return existe;
+    }
+
+    public Boolean datesImportees()
+    {
+        Boolean existe = false;
+        Cursor curseurDates = maBase.rawQuery("SELECT * FROM DATES",new String[] {});
+        if (curseurDates.getCount() != 0)
         {
             existe = true;
         }
@@ -132,6 +143,7 @@ public class PhotosDAO {
                     )
             );
         }
+        curseurContact.close();
         return listPhotos;
     }
 
@@ -149,6 +161,7 @@ public class PhotosDAO {
                     )
             );
         }
+        curseurContact.close();
         return lesVotes;
     }
 }

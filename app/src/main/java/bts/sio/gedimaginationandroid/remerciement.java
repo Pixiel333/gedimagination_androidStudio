@@ -54,6 +54,7 @@ public class remerciement extends AppCompatActivity {
         btnRetour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                timer.cancel();
                 Intent accueil = new Intent(remerciement.this, MainActivity.class);
                 startActivity(accueil);
             }
