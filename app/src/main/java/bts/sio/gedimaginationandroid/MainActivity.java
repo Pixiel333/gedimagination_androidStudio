@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                 super.onSuccess(statusCode, headers, response);
                                 Toast.makeText(getApplicationContext(), "Données envoyées, Status code = " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
+                                btnExporter.setEnabled(false);
                             }
 
                             @Override
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                 super.onFailure(statusCode, headers, responseString, throwable);
                                 if (statusCode == 401) {
                                     Toast.makeText(getApplicationContext(), "Erreur d'authentification, Status code = " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
-                                } else {
+                                } else if (statusCode != 201) {
                                     Toast.makeText(getApplicationContext(), "Erreur impossible d'envoyer les données, Status code = " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
                                 }
 
